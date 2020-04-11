@@ -151,7 +151,7 @@ testing_set_inputs = data2.iloc[:,0:n_features]
 testing_set_inputs = testing_set_inputs.to_numpy()
 testing_set_outputs = data2.y
 testing_set_outputs = testing_set_outputs.to_numpy()
-target_mean = 0.0001
+target_mean = 0.16
 w=0
 
 while w==0:
@@ -159,10 +159,11 @@ while w==0:
     neural_network.train(training_set_inputs, training_set_outputs, 100,6,32)
     teste=neural_network.think(testing_set_inputs,testing_set_inputs.shape[0])
     prediction_error=testing_set_outputs-teste
-    mean = np.mean(prediction_error)
+    mean = np.mean(np.abs(prediction_error))
+    learning_rate = learning_rate - 0.01
     if np.abs(mean) > target_mean:
         if learning_rate > 0:
-            learning_rate = learning_rate - 0.01
+            learning_rate = learning_rate
         else:
             learning_rate = 1
     else:
@@ -178,6 +179,8 @@ print ("New  input layer bias after training: ")
 print (neural_network.bias1)
 print ("New  output layer bias after training: ")
 print (neural_network.bias2)
+print ("Learning Rate: ")
+print(learning_rate)
 print ("Prediction error mean: ")
 print(mean)
 print ("Prediction error max: ")
